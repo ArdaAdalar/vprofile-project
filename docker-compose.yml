@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   vprodb:
-    build: 
+    build:
       context: ./Docker-files/db
     image: ardaadalar/vprofiledb
     container_name: vprodb
@@ -11,42 +11,40 @@ services:
       - vprodbdata:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=vprodbpass
+      - MYSQL_DATABASE=accounts  # Added database initialization
 
   vprocache01:
     image: memcached
     ports:
-      - 11211:11211
+      - "11211:11211"
 
   vpromq01:
     image: rabbitmq
     ports:
-      - 15672:15672
+      - "5672:5672"     # RabbitMQ messaging port
+      - "15672:15672"   # RabbitMQ management port
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
 
   vproapp:
-    build: 
+    build:
       context: ./Docker-files/app
     image: ardaadalar/vprofileapp
     container_name: vproapp
     ports:
       - "8080:8080"
     volumes:
-      - vprodbdata:/usr/local/tomcat/webapps
+      - vprodbdata:/usr/local/tomcat/webapps  # Verify if this volume mapping is needed for app data
 
   vproweb:
-    build: 
+    build:
       context: ./Docker-files/web
     image: ardaadalar/vprofileweb
     container_name: vproweb
     ports:
       - "80:80"
 
-
 volumes:
   vprodbdata: {}
   vproappdata: {}
-
-
- 
