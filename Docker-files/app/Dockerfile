@@ -4,7 +4,7 @@ RUN git clone https://github.com/ArdaAdalar/vprofile-project.git
 RUN cd vprofile-project && git checkout docker && mvn install
 
 
-FROM tomcat:9-jrell
+FROM tomcat:9-jre11
 LABEL "Project" = "Vprofile"
 LABEL "Author" = "Arda"
 RUN rm -rf /usr/local/tomcat/webapps/*
